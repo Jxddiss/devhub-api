@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import * as middlewares from './middlewares';
 import api from './api';
+import userRoutes from './routes/userRoutes';
 import MessageResponse from './interfaces/MessageResponse';
 
 require('dotenv').config();
@@ -22,7 +23,8 @@ app.get<{}, MessageResponse>('/', (req, res) => {
   });
 });
 
-app.use('/api/v1', api);
+app.use('/api/v2', api);
+app.use('/api/v1', userRoutes);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
