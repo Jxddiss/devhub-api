@@ -56,4 +56,4 @@ npm run dev
    ```
 
 6. **Données initiales (optionnel)**  
-   Si on ajouter des données initiales, on peut modifier le fichier `sync.ts` pour inclure des insertions dans la bd
+   Si on veut ajouter des données initiales, on peut modifier le fichier `sync.ts` pour inclure des insertions dans la bd
