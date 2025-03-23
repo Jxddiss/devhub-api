@@ -11,6 +11,9 @@ export class User {
   @PrimaryGeneratedColumn()
     id!: number;
 
+  @Column()
+  firebaseUid!: string;
+
   @Column({ type: 'varchar', length: 255 })
     lastName!: string;
 
