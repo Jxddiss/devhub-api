@@ -83,29 +83,37 @@ export const loginController = async (req: Request, res: Response) => {
 
 //Inscription et connexion avec Google
 export const googleLoginController = async (req: Request, res: Response) => {
-    console.log("googleLoginController");
-    try {
-      const { idToken } = req.body;
-  
-      const credential = GoogleAuthProvider.credential(idToken);
-      const firebaseUser = await signInWithCredential(auth, credential);
-  
-      const userRepository = AppDataSource.getRepository(User);
-      let user = await userRepository.findOneBy({ firebaseUid: firebaseUser.user.uid });
-  
-      if (!user) {
-        user = userRepository.create({
-          firstName: firebaseUser.user.displayName?.split(" ")[0] || "",
-          lastName: firebaseUser.user.displayName?.split(" ")[1] || "",
-          email: firebaseUser.user.email || "",
-          firebaseUid: firebaseUser.user.uid,
-        });
-        await userRepository.save(user);
-      }
-  
-      res.status(200).json({ message: "Connexion réussie.", user });
-    } catch (error: any) {
-      console.error("Erreur lors de la connexion avec Google :", error);
-      res.status(500).json({ message: "Erreur lors de la connexion avec Google.", error });
+  console.log("googleLoginController");
+  try {
+    const { idToken } = req.body;
+
+    const credential = GoogleAuthProvider.credential(idToken);
+    const firebaseUser = await signInWithCredential(auth, credential);
+
+    const userRepository = AppDataSource.getRepository(User);
+    let user = await userRepository.findOneBy({
+      firebaseUid: firebaseUser.user.uid,
+    });
+
+    if (!user) {
+      const email = firebaseUser.user.email || "";
+      const username = email.split("@")[0] || `user_${Date.now()}`;
+
+      user = userRepository.create({
+        firstName: firebaseUser.user.displayName?.split(" ")[0] || "",
+        lastName: firebaseUser.user.displayName?.split(" ")[1] || "",
+        email,
+        username,
+        firebaseUid: firebaseUser.user.uid,
+      });
+      await userRepository.save(user);
     }
-  };
+
+    res.status(200).json({ message: "Connexion réussie.", user });
+  } catch (error: any) {
+    console.error("Erreur lors de la connexion avec Google :", error);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la connexion avec Google.", error });
+  }
+};
