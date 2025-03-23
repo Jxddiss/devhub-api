@@ -8,7 +8,7 @@ let userRepository: any;
 beforeAll(async () => {
   await AppDataSource.initialize();
   await AppDataSource.synchronize(true);
-  userRepository = AppDataSource.getRepository(User); // Obtenir le repository User
+  userRepository = AppDataSource.getRepository(User);
 });
 
 afterAll(async () => {
@@ -54,7 +54,7 @@ describe('User API', () => {
       username: 'janesmith',
       email: 'janesmith@example.com',
     });
-    await userRepository.save(user); // Sauvegarder l'utilisateur dans la base de données
+    await userRepository.save(user);
 
     const response = await request(app)
       .get(`/api/v1/users/${user.id}`)
