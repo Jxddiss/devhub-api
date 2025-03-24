@@ -1,40 +1,4 @@
-# Express API Starter with Typescript
-
-How to use this template:
-
-```sh
-npx create-express-api --typescript --directory my-api-name
-```
-
-Includes API Server utilities:
-
-* [morgan](https://www.npmjs.com/package/morgan)
-  * HTTP request logger middleware for node.js
-* [helmet](https://www.npmjs.com/package/helmet)
-  * Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
-* [dotenv](https://www.npmjs.com/package/dotenv)
-  * Dotenv is a zero-dependency module that loads environment variables from a `.env` file into `process.env`
-* [cors](https://www.npmjs.com/package/cors)
-  * CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.
-
-Development utilities:
-
-* [typescript](https://www.npmjs.com/package/typescript)
-  * TypeScript is a language for application-scale JavaScript.
-* [ts-node](https://www.npmjs.com/package/ts-node)
-  * TypeScript execution and REPL for node.js, with source map and native ESM support.
-* [nodemon](https://www.npmjs.com/package/nodemon)
-  * nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
-* [eslint](https://www.npmjs.com/package/eslint)
-  * ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-* [typescript-eslint](https://typescript-eslint.io/)
-  * Tooling which enables ESLint to support TypeScript.
-* [jest](https://www.npmjs.com/package/jest)
-  * Jest is a delightful JavaScript Testing Framework with a focus on simplicity.
-* [supertest](https://www.npmjs.com/package/supertest)
-  * HTTP assertions made easy via superagent.
-
-## Setup
+## Project Setup
 
 ```
 npm install
@@ -57,3 +21,39 @@ npm run test
 ```
 npm run dev
 ```
+
+## Database Setup
+
+1. **Installer PostgreSQL**  
+   Avoir PostgreSQL dans sa machine [PostgreSQL Downloads](https://www.postgresql.org/download/).
+
+2. **Créer une base de données**  
+   Se connecter à PostgreSQL et créez une base de données nommée `dev_hub` :
+   ```sql
+   CREATE DATABASE dev_hub;
+   ```
+
+3. **Configurer les variables d'environnement**  
+   Mettre à jour `.env` avec les informations de connexion PostgreSQL :
+   ```
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=postgres
+   DB_PASSWORD=root
+   DB_NAME=dev_hub
+   ```
+
+4. **Synchroniser la base de données**  
+   Sync la bd à chaque changement de Model :
+   ```
+   npm run sync-db
+   ```
+
+5. **Vérifier la connexion**  
+   Ce message doit apparaître si ça fonctionne :
+   ```
+   Database connection established successfully.
+   ```
+
+6. **Données initiales (optionnel)**  
+   Si on veut ajouter des données initiales, on peut modifier le fichier `sync.ts` pour inclure des insertions dans la bd
