@@ -19,17 +19,19 @@ export const signUpController = async (req: Request, res: Response) => {
   if (!firstName || !lastName || !username || !email || !password) {
     return res.status(400).json({ message: "Tous les champs sont requis." });
   }
-
   try {
     const firebaseUser = await signUpWithEmail(email, password);
 
     const userRepository = AppDataSource.getRepository(User);
+    const avatar = `https://robohash.org/${encodeURIComponent(username)}.png`;
+
     const newUser = userRepository.create({
       firstName,
       lastName,
       username,
       email,
       firebaseUid: firebaseUser.user.uid,
+      avatar,
     });
     await userRepository.save(newUser);
 
@@ -112,6 +114,9 @@ export const googleLoginController = async (req: Request, res: Response) => {
     if (!user) {
       const email = firebaseUser.user.email || "";
       const username = email.split("@")[0] || `user_${Date.now()}`;
+      const avatar =
+        firebaseUser.user.photoURL ||
+        `https://robohash.org/${encodeURIComponent(username)}.png`;
 
       user = userRepository.create({
         firstName: firebaseUser.user.displayName?.split(" ")[0] || "",
@@ -119,6 +124,7 @@ export const googleLoginController = async (req: Request, res: Response) => {
         email,
         username,
         firebaseUid: firebaseUser.user.uid,
+        avatar,
       });
       await userRepository.save(user);
     }
