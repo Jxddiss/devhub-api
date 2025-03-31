@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { signUpWithEmail } from "../services/authService";
-import { signInWithEmail } from "../services/authService";
+import { signUpWithEmail } from '../services/authService';
+import { signInWithEmail } from '../services/authService';
 
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth } from '../config/firebaseConfig';
 
-import { generateToken } from "../services/tokenService";
+import { generateToken } from '../services/tokenService';
 
-import { AppDataSource } from "../config/ormconfig";
-import { User } from "../models/User";
+import { AppDataSource } from '../config/ormconfig';
+import { User } from '../models/User';
 
 
 //Inscription
@@ -17,7 +17,7 @@ export const signUpController = async (req: Request, res: Response) => {
   const { firstName, lastName, username, email, password } = req.body;
 
   if (!firstName || !lastName || !username || !email || !password) {
-    return res.status(400).json({ message: "Tous les champs sont requis." });
+    return res.status(400).json({ message: 'Tous les champs sont requis.' });
   }
   try {
     const firebaseUser = await signUpWithEmail(email, password);
@@ -37,7 +37,7 @@ export const signUpController = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json({ message: "Utilisateur créé avec succès.", user: newUser });
+      .json({ message: 'Utilisateur créé avec succès.', user: newUser });
   } catch (error: any) {
     console.error("Erreur lors de l'inscription :", error);
 
@@ -58,7 +58,7 @@ export const loginController = async (req: Request, res: Response) => {
   if (!email || !password) {
     return res
       .status(400)
-      .json({ message: "Email et mot de passe sont requis." });
+      .json({ message: 'Email et mot de passe sont requis.' });
   }
 
   try {
@@ -72,7 +72,7 @@ export const loginController = async (req: Request, res: Response) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: "Utilisateur non trouvé dans la base de données." });
+        .json({ message: 'Utilisateur non trouvé dans la base de données.' });
     }
     const tokenPayload = {
       id: user.id,
@@ -85,21 +85,21 @@ export const loginController = async (req: Request, res: Response) => {
 
     const token = await generateToken(tokenPayload);
 
-    res.status(200).json({ message: "Connexion réussie.", user,token });
+    res.status(200).json({ message: 'Connexion réussie.', user, token });
   } catch (error: any) {
-    console.error("Erreur lors de la connexion :", error);
+    console.error('Erreur lors de la connexion :', error);
 
     if (error.code) {
       return res.status(400).json({ message: error.message, code: error.code });
     }
 
-    res.status(500).json({ message: "Erreur lors de la connexion.", error });
+    res.status(500).json({ message: 'Erreur lors de la connexion.', error });
   }
 };
 
 //Inscription et connexion avec Google
 export const googleLoginController = async (req: Request, res: Response) => {
-  console.log("googleLoginController");
+  console.log('googleLoginController');
   try {
     const { idToken } = req.body;
 
@@ -112,15 +112,15 @@ export const googleLoginController = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      const email = firebaseUser.user.email || "";
-      const username = email.split("@")[0] || `user_${Date.now()}`;
+      const email = firebaseUser.user.email || '';
+      const username = email.split('@')[0] || `user_${Date.now()}`;
       const avatar =
         firebaseUser.user.photoURL ||
         `https://robohash.org/${encodeURIComponent(username)}.png`;
 
       user = userRepository.create({
-        firstName: firebaseUser.user.displayName?.split(" ")[0] || "",
-        lastName: firebaseUser.user.displayName?.split(" ")[1] || "",
+        firstName: firebaseUser.user.displayName?.split(' ')[0] || '',
+        lastName: firebaseUser.user.displayName?.split(' ')[1] || '',
         email,
         username,
         firebaseUid: firebaseUser.user.uid,
@@ -140,12 +140,12 @@ export const googleLoginController = async (req: Request, res: Response) => {
 
     const token = await generateToken(tokenPayload);
 
-    res.status(200).json({ message: "Connexion réussie.", user, token });
+    res.status(200).json({ message: 'Connexion réussie.', user, token });
   } catch (error: any) {
-    console.error("Erreur lors de la connexion avec Google :", error);
+    console.error('Erreur lors de la connexion avec Google :', error);
     res
       .status(500)
-      .json({ message: "Erreur lors de la connexion avec Google.", error });
+      .json({ message: 'Erreur lors de la connexion avec Google.', error });
   }
 };
 
@@ -154,14 +154,14 @@ const invalidatedTokens: Set<string> = new Set();
 export const logoutController = async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(400).json({ message: "Token manquant." });
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(400).json({ message: 'Token manquant.' });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(' ')[1];
   invalidatedTokens.add(token);
 
-  res.status(200).json({ message: "Déconnexion réussie." });
+  res.status(200).json({ message: 'Déconnexion réussie.' });
 };
 
 export const isTokenInvalidated = (token: string): boolean => {

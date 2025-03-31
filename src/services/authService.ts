@@ -1,12 +1,12 @@
-import { GoogleAuthProvider, createUserWithEmailAndPassword, GithubAuthProvider, OAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/firebaseConfig';
 
 export const signUpWithEmail = async (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+  return createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signInWithEmail = async (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  return signInWithEmailAndPassword(auth, email, password);
 };
 
 export const signInWithGoogle = async () => {

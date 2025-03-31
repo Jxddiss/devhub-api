@@ -26,9 +26,9 @@ router.put('/:id', updateUserController);
 // Supprimer un utilisateur
 router.delete('/:id', deleteUserController);
 
-router.put("/:id/avatar", updateUserAvatarController);
+router.put('/:id/avatar', updateUserAvatarController);
 
 // Route to update banner
-router.put("/:id/banner", updateUserBannerController);
+router.put('/:id/banner', updateUserBannerController);
 
 export default router;

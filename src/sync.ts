@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { AppDataSource } from './config/ormconfig';
-import { User } from './models/User';
 
 const syncDatabase = async () => {
   try {

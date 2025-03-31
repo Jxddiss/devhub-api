@@ -12,7 +12,7 @@ export class User {
     id!: number;
 
   @Column()
-  firebaseUid!: string;
+    firebaseUid!: string;
 
   @Column({ type: 'varchar', length: 255 })
     lastName!: string;
