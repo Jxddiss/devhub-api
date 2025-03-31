@@ -5,6 +5,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Uploads
+src/uploads/avatars/*
+src/uploads/banners/*
+!src/uploads/avatars/.gitkeep
+!src/uploads/banners/.gitkeep
+
+
+
 # Runtime data
 pids
 *.pid
