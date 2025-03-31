@@ -6,9 +6,8 @@ import {
   updateUser,
   deleteUser,
 } from '../services/userService';
-import fs from 'fs';
-import path from 'path';
 import { verifyToken } from '../services/tokenService';
+import { uploadFile } from '../services/uploadService';
 
 
 export const createUserController = async (req: Request, res: Response) => {
@@ -90,21 +89,8 @@ export const updateUserAvatarController = async (req: Request, res: Response) =>
     }
 
     const avatarFile = req.files.avatar as any;
-    const uploadDir = path.join(__dirname, '../uploads/avatars');
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const avatarPath = path.join(uploadDir, `${user.username}.png`);
-
-    if (fs.existsSync(avatarPath)) {
-      fs.unlinkSync(avatarPath);
-    }
-
-    fs.writeFileSync(avatarPath, avatarFile.data);
-
-    const avatarUrl = `${req.protocol}://${req.get('host')}/uploads/avatars/${user.username}.png`;
+    const avatarUrl = await uploadFile(avatarFile);
 
     const updatedUser = await updateUser(userId, { avatar: avatarUrl });
 
@@ -140,22 +126,11 @@ export const updateUserBannerController = async (req: Request, res: Response) =>
       return res.status(400).json({ error: 'No banner file uploaded' });
     }
 
-    const bannerFile = req.files.banner as any;
-    const uploadDir = path.join(__dirname, '../uploads/banners');
+    const bannerFile = Array.isArray(req.files.banner) 
+      ? req.files.banner[0] 
+      : req.files.banner;
 
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const bannerPath = path.join(uploadDir, `${userId}-banner.png`);
-
-    if (fs.existsSync(bannerPath)) {
-      fs.unlinkSync(bannerPath);
-    }
-
-    fs.writeFileSync(bannerPath, bannerFile.data);
-
-    const bannerUrl = `${req.protocol}://${req.get('host')}/uploads/banners/${userId}-banner.png`;
+    const bannerUrl = await uploadFile(bannerFile);
 
     const updatedUser = await updateUser(userId, { banner: bannerUrl });
 
