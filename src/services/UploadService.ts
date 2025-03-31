@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { UploadedFile } from 'express-fileupload';
 import { Client  } from 'minio';
 
@@ -13,7 +14,7 @@ const minioClient = new Client({
 
 const bucketName = process.env.MINIO_BUCKET || 'default-bucket';
 
-export const uploadFile = async (file: UploadedFile, fileName: string): Promise<string> => {
+export const uploadFile = async (file: UploadedFile, fileName?: string): Promise<string> => {
   const exists = await minioClient.bucketExists(bucketName);
   if (!exists) {
     throw new Error(`Bucket ${bucketName} does not exist`);
@@ -21,6 +22,10 @@ export const uploadFile = async (file: UploadedFile, fileName: string): Promise<
   const metaData = {
     'Content-Type': file.mimetype,
   };
+
+  if (!fileName) {
+    fileName = `${randomUUID()}-${file.name}`;
+  }
 
   try {
     await minioClient.putObject(bucketName, fileName, file.data, file.size, metaData);
