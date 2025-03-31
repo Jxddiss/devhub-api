@@ -89,8 +89,9 @@ export const updateUserAvatarController = async (req: Request, res: Response) =>
     }
 
     const avatarFile = req.files.avatar as any;
+    const fileName = `avatar-${userId}`;
 
-    const avatarUrl = await uploadFile(avatarFile);
+    const avatarUrl = await uploadFile(avatarFile, fileName);
 
     const updatedUser = await updateUser(userId, { avatar: avatarUrl });
 
@@ -130,7 +131,9 @@ export const updateUserBannerController = async (req: Request, res: Response) =>
       ? req.files.banner[0] 
       : req.files.banner;
 
-    const bannerUrl = await uploadFile(bannerFile);
+    const fileName = `banner-${userId}`;
+
+    const bannerUrl = await uploadFile(bannerFile, fileName);
 
     const updatedUser = await updateUser(userId, { banner: bannerUrl });
 
