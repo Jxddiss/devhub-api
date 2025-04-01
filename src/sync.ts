@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { AppDataSource } from './config/ormconfig';
-import { Tag } from './models/Tag';
+
 const syncDatabase = async () => {
   const tagsToAdd = [
     { name: '.NET Core' },
