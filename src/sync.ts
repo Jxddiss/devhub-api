@@ -55,7 +55,7 @@ const syncDatabase = async () => {
     { name: 'Swift' },
     { name: 'Swing' },
     { name: 'Tailwind CSS' },
-    {name: 'Three.js'},
+    { name: 'Three.js' },
     { name: 'Thymeleaf' },
     { name: 'TypeScript' },
     { name: 'Unreal Engine' },
@@ -63,7 +63,7 @@ const syncDatabase = async () => {
     { name: 'Vue.js' },
     { name: 'WebRTC' },
     { name: 'WebSocket' },
-    { name: 'Azure' }
+    { name: 'Azure' },
   ];
   try {
     await AppDataSource.initialize();

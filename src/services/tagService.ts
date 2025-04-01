@@ -9,7 +9,7 @@ export const createTag = async (data: Partial<Tag>) => {
 };
 
 export const getTagById = async (id: number) => {
-    return tagRepository.findOneBy({ id });
+  return tagRepository.findOneBy({ id });
 };
 
 export const getAllTags = async () => {
@@ -21,16 +21,16 @@ export const getTagByName = async (name: string) => {
 };
 
 export const updateTag = async (id: number, data: Partial<Tag>) => {
-    const tag = await tagRepository.findOneBy({ id });
-    if (!tag) throw new Error('Tag not found');
-    Object.assign(tag, data);
-    return tagRepository.save(tag);
+  const tag = await tagRepository.findOneBy({ id });
+  if (!tag) throw new Error('Tag not found');
+  Object.assign(tag, data);
+  return tagRepository.save(tag);
 };
 
 export const deleteTag = async (id: number) => {
-    const tag = await tagRepository.findOneBy({ id });
-    if (!tag) throw new Error('Tag not found');
-    return tagRepository.remove(tag);
+  const tag = await tagRepository.findOneBy({ id });
+  if (!tag) throw new Error('Tag not found');
+  return tagRepository.remove(tag);
 };
 
 

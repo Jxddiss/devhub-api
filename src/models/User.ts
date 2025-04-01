@@ -57,10 +57,10 @@ export class User {
   @OneToMany(() => Projet, (projet) => projet.author, {
     cascade: true,
   })
-  projetsEcrits!: Projet[];
+    projetsEcrits!: Projet[];
 
   @OneToMany(() => Projet, (projet) => projet.author, {
     cascade: true,
   })
-  comments!: Projet[];
+    comments!: Projet[];
 }
