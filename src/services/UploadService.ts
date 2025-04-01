@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { UploadedFile } from 'express-fileupload';
 import { Client  } from 'minio';
 
-const baseUrl = process.env.MINIO_BASE_URL || 'http://localhost:9000/';
+const baseUrl = process.env.MINIO_BASE_URL || 'http://localhost:9000';
 
 const minioClient = new Client({
   endPoint: process.env.MINIO_ENDPOINT || 'localhost',
