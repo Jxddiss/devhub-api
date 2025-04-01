@@ -88,7 +88,9 @@ export const updateUserAvatarController = async (req: Request, res: Response) =>
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const avatarFile = req.files.avatar as any;
+    const avatarFile = Array.isArray(req.files.avatar)
+      ? req.files.avatar[0]
+      : req.files.avatar;
     const fileName = `avatar-${userId}`;
 
     const avatarUrl = await uploadFile(avatarFile, fileName);

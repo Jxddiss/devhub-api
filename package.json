@@ -17,6 +17,8 @@
   "author": "Nicholson Rainville Jacques, Ali Benkarrouch",
   "license": "MIT",
   "dependencies": {
+    "@types/vimeo__vimeo": "^3.0.0",
+    "@vimeo/vimeo": "^3.0.3",
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
