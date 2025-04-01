@@ -24,8 +24,8 @@ export class Projet {
   @Column({ type: 'text' })
     description!: string;
 
-  @Column({ type: 'varchar', length: 255 })
-    previewImageUrl!: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    previewImageUrl?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
     githubUrl?: string;
@@ -33,8 +33,8 @@ export class Projet {
   @Column({ type: 'varchar', length: 255, nullable: true })
     gitLabUrl?: string;
 
-  @Column({ type: 'varchar', length: 255 })
-    liveUrl!: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    liveUrl?: string;
 
   @Column({ type: 'varchar', length: 255 })
     demoUrl!: string;
@@ -46,10 +46,10 @@ export class Projet {
     updatedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.projetsEcrits)
-    teacher!: User;
+    teacher?: User;
 
   @ManyToOne(() => Course, (course) => course.projets)
-    course!: Course;
+    course?: Course;
 
   @Column({ type: 'int', default: 0 })
     likes!: number;

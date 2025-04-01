@@ -1,9 +1,10 @@
 import express from 'express';
-import { uploadVideoDemoController } from '../controllers/projetController';
+import { createProjetController } from '../controllers/projetController';
+import { authenticate } from '../middlewares';
 
 
 const router = express.Router();
 
-router.post('/', uploadVideoDemoController);
+router.post('/', authenticate, createProjetController);
 
 export default router;
