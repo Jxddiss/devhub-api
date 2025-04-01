@@ -6,10 +6,12 @@ import {
   UpdateDateColumn,
   ManyToMany,
   ManyToOne,
-  JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { User } from './User';
 import { Tag } from './Tag';
+import { Course } from './Course';
+import { Comment } from './Comment';
 
 @Entity('projects')
 export class Projet {
@@ -44,11 +46,10 @@ export class Projet {
     updatedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.projetsEcrits)
-  @JoinTable()
     teacher!: User;
 
-  @Column({ type: 'varchar', length: 255 })
-    courseName!: string;
+  @ManyToOne(() => Course, (course) => course.projets)
+    course!: Course;
 
   @Column({ type: 'int', default: 0 })
     likes!: number;
@@ -57,7 +58,6 @@ export class Projet {
     views!: number;
 
   @ManyToOne(() => User, (user) => user.projetsEcrits)
-  @JoinTable()
     author!: User;
 
   @ManyToMany(() => User, (user) => user.projets)
@@ -66,9 +66,7 @@ export class Projet {
   @ManyToMany(() => Tag, (tag) => tag.projets)
     tags!: Tag[];
 
-  @ManyToMany(() => User, (user) => user.projets)
-  @JoinTable()
-    comments!: User[];
-
+  @OneToMany(() => Comment, (comment) => comment.projet)
+    comments!: Comment[];
 
 }
