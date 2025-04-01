@@ -4,7 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
 } from 'typeorm';
+import { Projet } from './Projet';
 
 @Entity('users')
 export class User {
@@ -43,4 +47,15 @@ export class User {
 
   @UpdateDateColumn()
     updatedAt!: Date;
+
+  @ManyToMany(() => Projet, (projet) => projet.colaborateurs, {
+    cascade: true,
+  })
+  @JoinTable()
+    projets!: Projet[];
+  
+  @OneToMany(() => Projet, (projet) => projet.auteur, {
+    cascade: true,
+  })
+    projetsEcrits!: Projet[];
 }
