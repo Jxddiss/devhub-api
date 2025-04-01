@@ -48,14 +48,19 @@ export class User {
   @UpdateDateColumn()
     updatedAt!: Date;
 
-  @ManyToMany(() => Projet, (projet) => projet.colaborateurs, {
+  @ManyToMany(() => Projet, (projet) => projet.collaborators, {
     cascade: true,
   })
   @JoinTable()
     projets!: Projet[];
   
-  @OneToMany(() => Projet, (projet) => projet.auteur, {
+  @OneToMany(() => Projet, (projet) => projet.author, {
     cascade: true,
   })
-    projetsEcrits!: Projet[];
+  projetsEcrits!: Projet[];
+
+  @OneToMany(() => Projet, (projet) => projet.author, {
+    cascade: true,
+  })
+  comments!: Projet[];
 }

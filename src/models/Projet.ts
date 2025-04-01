@@ -9,6 +9,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { User } from './User';
+import { Tag } from './Tag';
 
 @Entity('projects')
 export class Projet {
@@ -16,7 +17,7 @@ export class Projet {
     id!: number;
 
   @Column({ type: 'varchar', length: 255 })
-    name!: string;
+    title!: string;
 
   @Column({ type: 'text' })
     description!: string;
@@ -42,18 +43,32 @@ export class Projet {
   @UpdateDateColumn()
     updatedAt!: Date;
 
-  @Column({ type: 'int', default: 0 })
-    nbLikes!: number;
-
-  @Column({ type: 'int', default: 0 })
-    nbVues!: number;
-
-  
   @ManyToOne(() => User, (user) => user.projetsEcrits)
   @JoinTable()
-    auteur!: User;
+    teacher!: User;
+
+  @Column({ type: 'varchar', length: 255 })
+    courseName!: string;
+
+  @Column({ type: 'int', default: 0 })
+    likes!: number;
+
+  @Column({ type: 'int', default: 0 })
+    views!: number;
+
+  @ManyToOne(() => User, (user) => user.projetsEcrits)
+  @JoinTable()
+    author!: User;
 
   @ManyToMany(() => User, (user) => user.projets)
-    colaborateurs!: User[];
+    collaborators!: User[];
+
+  @ManyToMany(() => Tag, (tag) => tag.projets)
+    tags!: Tag[];
+
+  @ManyToMany(() => User, (user) => user.projets)
+  @JoinTable()
+    comments!: User[];
+
 
 }
