@@ -4,13 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
 } from 'typeorm';
 import { User } from './User';
-import { Tag } from './Tag';
-import { Course } from './Course';
 import { Comment } from './Comment';
 
 @Entity('projects')
@@ -45,11 +42,14 @@ export class Projet {
   @UpdateDateColumn()
     updatedAt!: Date;
 
-  @ManyToOne(() => User, (user) => user.projetsEcrits)
-    teacher?: User;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    teacher?: string;
 
-  @ManyToOne(() => Course, (course) => course.projets)
-    course?: Course;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    course?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    session?: string;
 
   @Column({ type: 'int', default: 0 })
     likes!: number;
@@ -57,14 +57,14 @@ export class Projet {
   @Column({ type: 'int', default: 0 })
     views!: number;
 
-  @ManyToOne(() => User, (user) => user.projetsEcrits)
+  @ManyToOne(() => User, (user) => user.projetsEcrits, { eager: true })
     author!: User;
 
-  @ManyToMany(() => User, (user) => user.projets)
-    collaborators!: User[];
+  @Column({ type: 'simple-array', nullable: true })
+    collaborators?: string[];
 
-  @ManyToMany(() => Tag, (tag) => tag.projets)
-    tags!: Tag[];
+  @Column({ type: 'simple-array', nullable: true })
+    tags?: string[];
 
   @OneToMany(() => Comment, (comment) => comment.projet)
     comments!: Comment[];

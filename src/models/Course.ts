@@ -6,7 +6,6 @@ import {
 } from 'typeorm';
 import { Projet } from './Projet';
 
-
 @Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn()

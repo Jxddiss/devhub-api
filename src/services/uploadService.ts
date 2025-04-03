@@ -35,6 +35,19 @@ export const uploadFile = async (file: UploadedFile, fileName?: string): Promise
   }
 };
 
+export const uploadVideo = async (file: UploadedFile, videoName: string, videoDescription: string): Promise<string> => {
+  try {
+    const fileName = `${videoName.replace(/\s+/g, '_')}-${Date.now()}`;
+    const publicUrl = await uploadFile(file, fileName);
+
+    console.log('Video uploaded successfully. Public URL:', publicUrl);
+    return publicUrl;
+  } catch (error: any) {
+    console.error('Failed to upload video:', error.message);
+    throw new Error(`Failed to upload video: ${error.message}`);
+  }
+};
+
 export const deleteFile = async (fileName: string): Promise<void> => {
   try {
     await minioClient.removeObject(bucketName, fileName);
