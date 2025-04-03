@@ -20,6 +20,12 @@ export const getTagByName = async (name: string) => {
   return tagRepository.findBy({ name: name });
 };
 
+export const getUniqueTagByName = async (name: string) => {
+  const tags = await tagRepository.findBy({ name: name });
+  if (tags.length === 0) return null;
+  return tags[0];
+};
+
 export const updateTag = async (id: number, data: Partial<Tag>) => {
   const tag = await tagRepository.findOneBy({ id });
   if (!tag) throw new Error('Tag not found');
