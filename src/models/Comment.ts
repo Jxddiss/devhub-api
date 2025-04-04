@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
   ManyToOne,
 } from 'typeorm';
 import { User } from './User';
@@ -28,4 +29,11 @@ export class Comment {
     
   @ManyToOne(() => Projet, (projet) => projet.comments)
     projet!: Projet;
+
+  @OneToMany(() => Comment, (comment) => comment.parentComment)
+  replies?: Comment[];
+
+  @ManyToOne(() => Comment, (comment) => comment.replies, { nullable: true, onDelete: 'CASCADE' })
+    parentComment?: Comment;
+
 }
