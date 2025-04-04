@@ -116,18 +116,12 @@ const syncDatabase = async () => {
     {id: 27, title: "Stage en programmation", projets: []},
   ]
   try {
-<<<<<<< HEAD
 
     //Initialize DB
     await AppDataSource.initialize();
     console.log('Database connection established successfully.');
 
     //Adding Tags
-=======
-    await AppDataSource.initialize();
-    console.log('Database connection established successfully.');
-
->>>>>>> 45da83b0e518b217b023ae1834e2515161b51201
     console.log('Adding tags to the database...');
     const tagRepository = AppDataSource.getRepository('Tag');
     for (const tagData of tagsToAdd) {
@@ -142,11 +136,8 @@ const syncDatabase = async () => {
     }
     console.log('Tags added successfully.');
     
-<<<<<<< HEAD
 
     //Adding Courses
-=======
->>>>>>> 45da83b0e518b217b023ae1834e2515161b51201
     console.log('Adding courses to the database...');
     const courseRepository = AppDataSource.getRepository(Course);
     for (const courseData of courseToAdd) {
