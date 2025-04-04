@@ -15,5 +15,6 @@ router.use('/emojis', emojis);
 router.use('/auth', auth);
 router.use('/tags', tags);
 router.use('/courses', courses);
+router.use('/comments', comments);
 
 export default router;

@@ -145,3 +145,38 @@ export const updateUserBannerController = async (req: Request, res: Response) =>
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+export const getUserByFirstAndLastController = async (req: Request, res: Response) => {
+  const { firstName, lastName } = req.params;
+  try {
+    const users = await getAllUsers();
+    const filteredUsers = users.filter(user => {
+      return (
+        user.firstName.toLowerCase() === firstName.toLowerCase() &&
+        user.lastName.toLowerCase() === lastName.toLowerCase()
+      );
+    });
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+}
+
+
+export const getUserByNameWildCardController = async (req: Request, res: Response) => {
+  const { search} = req.params;
+  try {
+    const users = await getAllUsers();
+    const filteredUsers = users.filter(user => {
+      return (
+        user.firstName.toLowerCase().includes(search.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(search.toLowerCase()) ||
+        user.username.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+}

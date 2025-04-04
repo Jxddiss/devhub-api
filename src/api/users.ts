@@ -7,28 +7,24 @@ import {
   deleteUserController,
   updateUserAvatarController,
   updateUserBannerController,
+  getUserByNameWildCardController,
+  getUserByFirstAndLastController,
 } from '../controllers/userController';
+import { authenticate } from '../middlewares';
 
 const router = express.Router();
 
-// Créer un utilisateur
 router.post('/', createUserController);
 
-// Obtenir tous les utilisateurs
 router.get('/', getAllUsersController);
-
-// Obtenir un utilisateur par son ID
 router.get('/:id', getUserByIdController);
+router.get('/name/:firstName/:lastName', getUserByFirstAndLastController);
+router.get('/name/:search', getUserByNameWildCardController);
 
-// Mettre à jour un utilisateur
-router.put('/:id', updateUserController);
+router.put('/:id',authenticate, updateUserController);
+router.put('/:id/banner',authenticate, updateUserBannerController);
+router.put('/:id/avatar',authenticate, updateUserAvatarController);
 
-// Supprimer un utilisateur
-router.delete('/:id', deleteUserController);
-
-router.put('/:id/avatar', updateUserAvatarController);
-
-// Route to update banner
-router.put('/:id/banner', updateUserBannerController);
+router.delete('/:id',authenticate, deleteUserController);
 
 export default router;

@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 import { Projet } from './Projet';
 
-
 @Entity('tags')
 export class Tag {
 
@@ -17,11 +16,10 @@ export class Tag {
   @Column({ type: 'varchar', length: 255 })
     name!: string;
     
-    
   @ManyToMany(() => Projet, (projet) => projet.tags, {
     cascade: true,
   })
+
   @JoinTable()
     projets!: Projet[];
-
 }

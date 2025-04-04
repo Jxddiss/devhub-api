@@ -11,7 +11,7 @@
     "lint": "eslint --fix src test",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "sync-db": "ts-node src/sync.ts"
+    "seed-db": "ts-node src/seed.ts"
   },
   "keywords": [],
   "author": "Nicholson Rainville Jacques, Ali Benkarrouch",
