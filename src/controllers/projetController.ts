@@ -1,4 +1,4 @@
-import { createProjet } from '../services/projetService';
+import { createProjet, decrementLikeCountByOne, incrementLikeCountByOne } from '../services/projetService';
 import { uploadVideo } from '../services/uploadService';
 import { getProjetsByUserId } from '../services/projetService';
 import { getProjetById } from '../services/projetService';
@@ -95,6 +95,29 @@ export const incrementViewCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
   try {
     const projet = await incrementViewCountByOne(projetId);
+    res.status(200).json(projet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+}
+
+
+export const incrementLikeCountByOneController = async (req: any, res: any) => {
+  const projetId = req.params.id;
+  try {
+    const projet = await incrementLikeCountByOne(projetId);
+    res.status(200).json(projet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+}
+
+export const decrementLikeCountByOneController = async (req: any, res: any) => {
+  const projetId = req.params.id;
+  try {
+    const projet = await decrementLikeCountByOne(projetId);
     res.status(200).json(projet);
   } catch (error) {
     console.error(error);

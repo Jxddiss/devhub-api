@@ -40,5 +40,18 @@ export const incrementViewCountByOne = async (id: number) => {
   return projetRepository.save(projet);
 };
 
+export const incrementLikeCountByOne = async (id: number) => {
+  const projet = await projetRepository.findOneBy({ id });
+  if (!projet) throw new Error('Projet not found');
+  projet.likes += 1;
+  return projetRepository.save(projet);
+}
+
+export const decrementLikeCountByOne = async (id: number) => {
+  const projet = await projetRepository.findOneBy({ id });
+  if (!projet) throw new Error('Projet not found');
+  projet.likes -= 1;
+  return projetRepository.save(projet);
+}
 
 
