@@ -14,6 +14,19 @@ const minioClient = new Client({
 
 const bucketName = process.env.MINIO_BUCKET || 'default-bucket';
 
+const videoContentTypes = [
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
+  'video/avi',
+  'video/mpeg',
+  'video/quicktime',
+  'video/x-ms-wmv',
+  'video/x-flv',
+  'video/3gpp',
+  'video/3gpp2',
+];
+
 export const uploadFile = async (file: UploadedFile, fileName?: string): Promise<string> => {
   const exists = await minioClient.bucketExists(bucketName);
   if (!exists) {
@@ -35,12 +48,15 @@ export const uploadFile = async (file: UploadedFile, fileName?: string): Promise
   }
 };
 
-export const uploadVideo = async (file: UploadedFile, videoName: string, videoDescription: string): Promise<string> => {
-  try {
-    const fileName = `${videoName.replace(/\s+/g, '_')}-${Date.now()}`;
-    const publicUrl = await uploadFile(file, fileName);
+export const uploadVideo = async ( file: UploadedFile, videoName: string ): Promise<string> => {
+  if (!videoContentTypes.includes(file.mimetype)) {
+    throw new Error(`Unsupported video format: ${file.mimetype}`);
+  }
 
-    console.log('Video uploaded successfully. Public URL:', publicUrl);
+  const fileName = `${videoName.replace(/\s+/g, '_')}-${Date.now()}`;
+
+  try {
+    const publicUrl = await uploadFile(file, fileName);
     return publicUrl;
   } catch (error: any) {
     console.error('Failed to upload video:', error.message);

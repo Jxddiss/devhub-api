@@ -161,11 +161,11 @@ export const getUserByFirstAndLastController = async (req: Request, res: Respons
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};
 
 
 export const getUserByNameWildCardController = async (req: Request, res: Response) => {
-  const { search} = req.params;
+  const { search } = req.params;
   try {
     const users = await getAllUsers();
     const filteredUsers = users.filter(user => {
@@ -179,4 +179,4 @@ export const getUserByNameWildCardController = async (req: Request, res: Respons
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};

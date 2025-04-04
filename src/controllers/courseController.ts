@@ -1,4 +1,4 @@
-import { getAllCourses } from "../services/courseService";
+import { getAllCourses } from '../services/courseService';
 
 export const getAllCoursesController = async (req: any, res: any) => {
   try {
@@ -8,4 +8,4 @@ export const getAllCoursesController = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};

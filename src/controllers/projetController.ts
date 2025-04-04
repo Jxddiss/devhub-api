@@ -2,7 +2,7 @@ import { createProjet, decrementLikeCountByOne, incrementLikeCountByOne } from '
 import { uploadVideo } from '../services/uploadService';
 import { getProjetsByUserId } from '../services/projetService';
 import { getProjetById } from '../services/projetService';
-import { getTagByName, getUniqueTagByName } from '../services/tagService';
+import { getUniqueTagByName } from '../services/tagService';
 import { incrementViewCountByOne } from '../services/projetService';
 import { getUniqueCourseByTitle } from '../services/courseService';
 
@@ -21,8 +21,7 @@ export const createProjetController = async (req: any, res: any) => {
     let url = null;
     if (videofile) {
       url = await uploadVideo(videofile, 
-        projet.title, 
-        projet.description
+        projet.title,
       );
     }
     projet.demoUrl = url;
@@ -38,12 +37,12 @@ export const createProjetController = async (req: any, res: any) => {
     for (let tagName of projet.tags) {
       const tag = await getUniqueTagByName(tagName);
       if (tag) {
-      dbTags.push(tag.name);
+        dbTags.push(tag.name);
       }
     }
     projet.tags = dbTags;
 
-    let dbCourses: string = "";
+    let dbCourses: string = '';
     if (projet.course) {
       const course = await getUniqueCourseByTitle(projet.course);
       if (course) {
@@ -77,7 +76,7 @@ export const getVideosFromUser = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};
 
 export const getVideoById = async (req: any, res: any) => {
   const projetId = req.params.id;
@@ -89,7 +88,7 @@ export const getVideoById = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};
 
 export const incrementViewCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
@@ -100,7 +99,7 @@ export const incrementViewCountByOneController = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};
 
 
 export const incrementLikeCountByOneController = async (req: any, res: any) => {
@@ -112,7 +111,7 @@ export const incrementLikeCountByOneController = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};
 
 export const decrementLikeCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
@@ -123,4 +122,4 @@ export const decrementLikeCountByOneController = async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });
   }
-}
+};

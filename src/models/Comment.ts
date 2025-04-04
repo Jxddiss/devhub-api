@@ -31,7 +31,7 @@ export class Comment {
     projet!: Projet;
 
   @OneToMany(() => Comment, (comment) => comment.parentComment)
-  replies?: Comment[];
+    replies?: Comment[];
 
   @ManyToOne(() => Comment, (comment) => comment.replies, { nullable: true, onDelete: 'CASCADE' })
     parentComment?: Comment;

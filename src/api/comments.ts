@@ -1,11 +1,11 @@
 import express from 'express';
 import {
-    createCommentController,
-    getAllCommentsByProjetController,
-    getAllRepliesByCommentIdController,
-    getAllCommentsByUserIdController,
-    deleteCommentController,
-} from "../controllers/commentController"
+  createCommentController,
+  getAllCommentsByProjetController,
+  getAllRepliesByCommentIdController,
+  getAllCommentsByUserIdController,
+  deleteCommentController,
+} from '../controllers/commentController';
 import { authenticate } from '../middlewares';
 
 const router = express.Router();

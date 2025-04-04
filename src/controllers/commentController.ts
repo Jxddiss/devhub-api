@@ -5,23 +5,23 @@ import {
   getCommentById,
   getAllRepliesByCommentId,
   deleteComment,
-} from "../services/commentService";
-import { getProjetById } from "../services/projetService";
+} from '../services/commentService';
+import { getProjetById } from '../services/projetService';
 
 export const createCommentController = async (req: any, res: any) => {
   if (!req.user) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   console.log(req.body);
 
   const projetId = req.body.projetId;
   if (!projetId) {
-    return res.status(400).json({ error: "Project id is required" });
+    return res.status(400).json({ error: 'Project id is required' });
   }
   const projet = await getProjetById(projetId);
   if (!projet) {
-    return res.status(404).json({ error: "Project not found" });
+    return res.status(404).json({ error: 'Project not found' });
   }
 
   const comment = req.body;
@@ -31,7 +31,7 @@ export const createCommentController = async (req: any, res: any) => {
   if (comment.parentComment) {
     const parentComment = await getCommentById(comment.parentComment);
     if (!parentComment) {
-      return res.status(404).json({ error: "Parent comment not found" });
+      return res.status(404).json({ error: 'Parent comment not found' });
     }
     comment.parentComment = parentComment;
   }
@@ -47,7 +47,7 @@ export const createCommentController = async (req: any, res: any) => {
 export const getAllCommentsByProjetController = async (req: any, res: any) => {
   const projetId = req.params.id;
   if (!projetId) {
-    return res.status(400).json({ error: "Project id is required" });
+    return res.status(400).json({ error: 'Project id is required' });
   }
   try {
     const comments = await getAllCommentsByProjet(projetId);
@@ -60,11 +60,11 @@ export const getAllCommentsByProjetController = async (req: any, res: any) => {
 
 export const getAllRepliesByCommentIdController = async (
   req: any,
-  res: any
+  res: any,
 ) => {
   const commentId = req.params.id;
   if (!commentId) {
-    return res.status(400).json({ error: "Comment id is required" });
+    return res.status(400).json({ error: 'Comment id is required' });
   }
   try {
     const replies = await getAllRepliesByCommentId(commentId);
@@ -78,7 +78,7 @@ export const getAllRepliesByCommentIdController = async (
 export const getAllCommentsByUserIdController = async (req: any, res: any) => {
   const userId = req.params.id;
   if (!userId) {
-    return res.status(400).json({ error: "User id is required" });
+    return res.status(400).json({ error: 'User id is required' });
   }
   try {
     const comments = await getAllCommentsByUserId(userId);
@@ -90,16 +90,16 @@ export const getAllCommentsByUserIdController = async (req: any, res: any) => {
 };
 
 export const deleteCommentController = async (req: any, res: any) => {
-    const commentId = req.params.id;
-    console.log(req)
-    if (!commentId) {
-        return res.status(400).json({ error: "Comment id is required" });
-    }
-    try {
-        const deletedComment = await deleteComment(commentId);
-        res.status(200).json(deletedComment);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: (error as Error).message });
-    }
+  const commentId = req.params.id;
+  console.log(req);
+  if (!commentId) {
+    return res.status(400).json({ error: 'Comment id is required' });
+  }
+  try {
+    const deletedComment = await deleteComment(commentId);
+    res.status(200).json(deletedComment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
 };

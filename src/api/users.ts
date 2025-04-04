@@ -21,10 +21,10 @@ router.get('/:id', getUserByIdController);
 router.get('/name/:firstName/:lastName', getUserByFirstAndLastController);
 router.get('/name/:search', getUserByNameWildCardController);
 
-router.put('/:id',authenticate, updateUserController);
-router.put('/:id/banner',authenticate, updateUserBannerController);
-router.put('/:id/avatar',authenticate, updateUserAvatarController);
+router.put('/:id', authenticate, updateUserController);
+router.put('/:id/banner', authenticate, updateUserBannerController);
+router.put('/:id/avatar', authenticate, updateUserAvatarController);
 
-router.delete('/:id',authenticate, deleteUserController);
+router.delete('/:id', authenticate, deleteUserController);
 
 export default router;

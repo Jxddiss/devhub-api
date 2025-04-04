@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/', authenticate, createProjetController);
 router.get('/user/:id', getVideosFromUser);
-router.get('/:id' , getVideoById);
+router.get('/:id', getVideoById);
 router.put('/view/:id', incrementViewCountByOneController);
 router.put('/like/:id', incrementLikeCountByOneController);
 router.put('/dislike/:id', decrementLikeCountByOneController);
