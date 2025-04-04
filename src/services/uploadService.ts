@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { UploadedFile } from 'express-fileupload';
 import { Client  } from 'minio';
+import { ACCEPTED_IMAGE_CONTENT_TYPES, ACCEPTED_VIDEO_CONTENT_TYPES } from '../lib/constants/constants';
 
 const baseUrl = process.env.MINIO_BASE_URL || 'http://localhost:9000';
 
@@ -14,20 +15,8 @@ const minioClient = new Client({
 
 const bucketName = process.env.MINIO_BUCKET || 'default-bucket';
 
-const videoContentTypes = [
-  'video/mp4',
-  'video/webm',
-  'video/ogg',
-  'video/avi',
-  'video/mpeg',
-  'video/quicktime',
-  'video/x-ms-wmv',
-  'video/x-flv',
-  'video/3gpp',
-  'video/3gpp2',
-];
+const uploadFile = async (file: UploadedFile, fileName?: string): Promise<string> => {
 
-export const uploadFile = async (file: UploadedFile, fileName?: string): Promise<string> => {
   const exists = await minioClient.bucketExists(bucketName);
   if (!exists) {
     throw new Error(`Bucket ${bucketName} does not exist`);
@@ -48,9 +37,30 @@ export const uploadFile = async (file: UploadedFile, fileName?: string): Promise
   }
 };
 
+export const uploadImageFile = async (file: UploadedFile, fileName?: string): Promise<string> => {
+  if (!ACCEPTED_IMAGE_CONTENT_TYPES.includes(file.mimetype)) {
+    const error = new Error(`Unsupported image format: ${file.mimetype}`);
+    (error as any).code = 'UNSUPPORTED_IMAGE_FORMAT';
+    throw error;
+  }
+  
+  if (!fileName) {
+    fileName = `${randomUUID()}-${file.name}`;
+  }
+
+  try {
+    const publicUrl = await uploadFile(file, fileName);
+    return publicUrl;
+  } catch (error: any) {
+    throw new Error(`File upload failed: ${error.message}`);
+  }
+};
+
 export const uploadVideo = async ( file: UploadedFile, videoName: string ): Promise<string> => {
-  if (!videoContentTypes.includes(file.mimetype)) {
-    throw new Error(`Unsupported video format: ${file.mimetype}`);
+  if (!ACCEPTED_VIDEO_CONTENT_TYPES.includes(file.mimetype)) {
+    const error = new Error(`Unsupported image format: ${file.mimetype}`);
+    (error as any).code = 'UNSUPPORTED_VIDEO_FORMAT';
+    throw error;
   }
 
   const fileName = `${videoName.replace(/\s+/g, '_')}-${Date.now()}`;

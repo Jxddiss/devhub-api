@@ -61,9 +61,12 @@ export const createProjetController = async (req: any, res: any) => {
 
     const createdProjet = await createProjet(projet);
     res.status(200).json(createdProjet);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(500).json({ error: (error as Error).message });
+    if (error.code === 'UNSUPPORTED_VIDEO_FORMAT') {
+      return res.status(400).json({ error: 'Unsupported video format' });
+    }
+    return res.status(500).json({ error: (error as Error).message });
   }
 };
 

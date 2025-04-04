@@ -7,7 +7,7 @@ import {
   deleteUser,
 } from '../services/userService';
 import { verifyToken } from '../services/tokenService';
-import { uploadFile } from '../services/uploadService';
+import { uploadImageFile } from '../services/uploadService';
 
 
 export const createUserController = async (req: Request, res: Response) => {
@@ -93,7 +93,16 @@ export const updateUserAvatarController = async (req: Request, res: Response) =>
       : req.files.avatar;
     const fileName = `avatar-${userId}`;
 
-    const avatarUrl = await uploadFile(avatarFile, fileName);
+    let avatarUrl = user.avatar;
+    try {
+      avatarUrl = await uploadImageFile(avatarFile, fileName);
+    } catch (error : any) {
+      console.error('Error uploading avatar:', error.message);
+      if (error.code === 'UNSUPPORTED_IMAGE_FORMAT') {
+        return res.status(400).json({ error: 'Unsupported image format' });
+      }
+      return res.status(500).json({ error: 'Failed to upload avatar' });
+    }
 
     const updatedUser = await updateUser(userId, { avatar: avatarUrl });
 
@@ -129,13 +138,27 @@ export const updateUserBannerController = async (req: Request, res: Response) =>
       return res.status(400).json({ error: 'No banner file uploaded' });
     }
 
+    const user = await getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
     const bannerFile = Array.isArray(req.files.banner) 
       ? req.files.banner[0] 
       : req.files.banner;
 
     const fileName = `banner-${userId}`;
 
-    const bannerUrl = await uploadFile(bannerFile, fileName);
+    let bannerUrl = user.banner;
+    try {
+      bannerUrl = await uploadImageFile(bannerFile, fileName);
+    } catch (error : any) {
+      console.error('Error uploading banner:', error.message);
+      if (error.code === 'UNSUPPORTED_IMAGE_FORMAT') {
+        return res.status(400).json({ error: 'Unsupported image format' });
+      }
+      return res.status(500).json({ error: 'Failed to upload banner' });
+    }
 
     const updatedUser = await updateUser(userId, { banner: bannerUrl });
 
