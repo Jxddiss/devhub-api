@@ -1,4 +1,4 @@
-import { createProjet, decrementLikeCountByOne, incrementLikeCountByOne } from '../services/projetService';
+import { createProjet, decrementLikeCountByOne, incrementLikeCountByOne, getAllProjets, getProjetsByTags } from '../services/projetService';
 import { uploadVideo } from '../services/uploadService';
 import { getProjetsByUserId } from '../services/projetService';
 import { getProjetById } from '../services/projetService';
@@ -121,6 +121,35 @@ export const decrementLikeCountByOneController = async (req: any, res: any) => {
   try {
     const projet = await decrementLikeCountByOne(projetId);
     res.status(200).json(projet);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+
+export const getProjetsByTagsController = async (req: any, res: any) => {
+  let tags: string[] = [];
+  
+  if (req.query.tags) {
+    tags = req.query.tags.split(',');
+  } else if (req.params.tags) {
+    tags = req.params.tags.split(',');
+  }
+
+  try {
+    const projets = await getProjetsByTags(tags);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getAllProjetsController = async (req: any, res: any) => {
+  try {
+    const projets = await getAllProjets();
+    res.status(200).json(projets);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: (error as Error).message });

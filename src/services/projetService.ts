@@ -1,5 +1,6 @@
 import { AppDataSource } from '../config/ormconfig';
 import { Projet } from '../models/Projet';
+import { In } from 'typeorm';
 
 const projetRepository = AppDataSource.getRepository(Projet);
 
@@ -14,6 +15,14 @@ export const getProjetById = async (id: number) => {
 
 export const getAllProjets = async () => {
   return projetRepository.find();
+};
+
+export const getProjetsByTags = async (tags: string[]) => {
+  const projets = await projetRepository.find({
+    where: { tags: In(tags) },
+    take: 15,
+  });
+  return projets.length > 1 ? projets : getAllProjets();
 };
 
 export const getProjetsByUserId = async (userId: number) => {
