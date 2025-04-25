@@ -25,6 +25,41 @@ export const getProjetsByTags = async (tags: string[]) => {
   return projets.length > 1 ? projets : getAllProjets();
 };
 
+export const getProjetsByTagsList = async (tags: string[]) => {
+  if (!tags || tags.length === 0) {
+    return getAllProjets();
+  }
+  const allProjets = await getAllProjets();
+  return allProjets.filter(projet => {
+    if (!projet.tags) return false;
+    return projet.tags.some(projetTag => tags.includes(projetTag));
+  });
+};
+
+export const getProjetsByTeacher = async (teacher: string) => {
+  return projetRepository.find({
+    where: { teacher: teacher },
+  });
+};
+
+export const getProjetsByCourse = async (course: string) => {
+  return projetRepository.find({
+    where: { course: course },
+  });
+};
+
+export const getProjetsBySession = async (session: string) => {
+  return projetRepository.find({
+    where: { session: session },
+  });
+};
+
+export const getProjetsByTitle = async (title: string) => {
+  return projetRepository.createQueryBuilder('projet')
+    .where('LOWER(projet.title) LIKE LOWER(:title)', { title: `%${title}%` })
+    .getMany();
+};
+
 export const getProjetsByUserId = async (userId: number) => {
   return projetRepository.find({ where: { author: { id: userId } } });
 };

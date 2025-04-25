@@ -1,15 +1,25 @@
-import { createProjet, decrementLikeCountByOne, incrementLikeCountByOne, getAllProjets, getProjetsByTags } from '../services/projetService';
-import { uploadVideo } from '../services/uploadService';
-import { getProjetsByUserId } from '../services/projetService';
-import { getProjetById } from '../services/projetService';
-import { getUniqueTagByName } from '../services/tagService';
-import { incrementViewCountByOne } from '../services/projetService';
-import { getUniqueCourseByTitle } from '../services/courseService';
+import {
+  createProjet,
+  decrementLikeCountByOne,
+  incrementLikeCountByOne,
+  getAllProjets,
+  getProjetsByTags,
+  getProjetsByTitle,
+  getProjetsByTagsList,
+  getProjetsByTeacher,
+  getProjetsByCourse,
+  getProjetsBySession,
+} from "../services/projetService";
+import { uploadVideo } from "../services/uploadService";
+import { getProjetsByUserId } from "../services/projetService";
+import { getProjetById } from "../services/projetService";
+import { getUniqueTagByName } from "../services/tagService";
+import { incrementViewCountByOne } from "../services/projetService";
+import { getUniqueCourseByTitle } from "../services/courseService";
 
 export const createProjetController = async (req: any, res: any) => {
-
   if (!req.files || !req.files.video) {
-    return res.status(400).json({ error: 'No video file uploaded' });
+    return res.status(400).json({ error: "No video file uploaded" });
   }
   const videofile = Array.isArray(req.files.video)
     ? req.files.video[0]
@@ -20,9 +30,7 @@ export const createProjetController = async (req: any, res: any) => {
   try {
     let url = null;
     if (videofile) {
-      url = await uploadVideo(videofile, 
-        projet.title,
-      );
+      url = await uploadVideo(videofile, projet.title);
     }
     projet.demoUrl = url;
     projet.createdAt = new Date();
@@ -42,13 +50,13 @@ export const createProjetController = async (req: any, res: any) => {
     }
     projet.tags = dbTags;
 
-    let dbCourses: string = '';
+    let dbCourses: string = "";
     if (projet.course) {
       const course = await getUniqueCourseByTitle(projet.course);
       if (course) {
         dbCourses = course.title;
       } else {
-        return res.status(404).json({ error: 'Course not found' });
+        return res.status(404).json({ error: "Course not found" });
       }
     }
     projet.course = dbCourses;
@@ -63,8 +71,8 @@ export const createProjetController = async (req: any, res: any) => {
     res.status(200).json(createdProjet);
   } catch (error: any) {
     console.error(error);
-    if (error.code === 'UNSUPPORTED_VIDEO_FORMAT') {
-      return res.status(400).json({ error: 'Unsupported video format' });
+    if (error.code === "UNSUPPORTED_VIDEO_FORMAT") {
+      return res.status(400).json({ error: "Unsupported video format" });
     }
     return res.status(500).json({ error: (error as Error).message });
   }
@@ -93,6 +101,71 @@ export const getVideoById = async (req: any, res: any) => {
   }
 };
 
+export const getProjetsByTitleController = async (req: any, res: any) => {
+  const title = req.params.title;
+  try {
+    const projets = await getProjetsByTitle(title);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getProjetsByTagsListController = async (req: any, res: any) => {
+  let tags: string[] = [];
+
+  if (req.query.tags) {
+    tags = req.query.tags.split(",");
+  } else if (req.params.tags) {
+    tags = req.params.tags.split(",");
+  }
+
+  try {
+    console.log("tags", tags);
+    const projets = await getProjetsByTagsList(tags);
+    console.log(projets.length);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getProjetsByTeacherController = async (req: any, res: any) => {
+  const teacher = req.params.teacher;
+  try {
+    const projets = await getProjetsByTeacher(teacher);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getProjetsByCourseController = async (req: any, res: any) => {
+  const course = req.params.course;
+  try {
+    const projets = await getProjetsByCourse(course);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getProjetsBySessionController = async (req: any, res: any) => {
+  const session = req.params.session;
+  try {
+    const projets = await getProjetsBySession(session);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+
 export const incrementViewCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
   try {
@@ -103,7 +176,6 @@ export const incrementViewCountByOneController = async (req: any, res: any) => {
     res.status(500).json({ error: (error as Error).message });
   }
 };
-
 
 export const incrementLikeCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
@@ -127,14 +199,13 @@ export const decrementLikeCountByOneController = async (req: any, res: any) => {
   }
 };
 
-
 export const getProjetsByTagsController = async (req: any, res: any) => {
   let tags: string[] = [];
-  
+
   if (req.query.tags) {
-    tags = req.query.tags.split(',');
+    tags = req.query.tags.split(",");
   } else if (req.params.tags) {
-    tags = req.params.tags.split(',');
+    tags = req.params.tags.split(",");
   }
 
   try {
