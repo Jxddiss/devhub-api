@@ -9,6 +9,7 @@ import {
   getProjetsByTeacher,
   getProjetsByCourse,
   getProjetsBySession,
+  getProjetsByCollaborator,
 } from "../services/projetService";
 import { uploadVideo } from "../services/uploadService";
 import { getProjetsByUserId } from "../services/projetService";
@@ -165,6 +166,19 @@ export const getProjetsBySessionController = async (req: any, res: any) => {
   }
 };
 
+export const getProjetsByCollaboratorController = async (
+  req: any,
+  res: any
+) => {
+  const collaborator = req.params.collaborator;
+  try {
+    const projets = await getProjetsByCollaborator(collaborator);
+    res.status(200).json(projets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
 
 export const incrementViewCountByOneController = async (req: any, res: any) => {
   const projetId = req.params.id;
