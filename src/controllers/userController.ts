@@ -10,6 +10,22 @@ import { verifyToken } from '../services/tokenService';
 import { uploadImageFile } from '../services/uploadService';
 
 
+export const meController = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Non authentifié" });
+    }
+    const user = await getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
 export const createUserController = async (req: Request, res: Response) => {
   try {
     const user = await createUser(req.body);
