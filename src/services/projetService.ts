@@ -1,6 +1,5 @@
 import { AppDataSource } from '../config/ormconfig';
-import { Projet } from '../models/Projet';
-import { In } from 'typeorm';
+import { Projet } from '../models/Projet';;
 
 const projetRepository = AppDataSource.getRepository(Projet);
 
@@ -18,11 +17,16 @@ export const getAllProjets = async () => {
 };
 
 export const getProjetsByTags = async (tags: string[]) => {
-  const projets = await projetRepository.find({
-    where: { tags: In(tags) },
-    take: 15,
+  if (!tags || tags.length === 0) {
+    return getAllProjets();
+  }
+  const allProjets = await getAllProjets();
+  const filteredProjets = allProjets.filter(projet => {
+    if (!projet.tags) return false;
+    return projet.tags.some(projetTag => tags.includes(projetTag));
   });
-  return projets.length > 1 ? projets : getAllProjets();
+  
+  return filteredProjets.length > 1 ? filteredProjets.slice(0, 15) : getAllProjets();
 };
 
 export const getProjetsByTagsList = async (tags: string[]) => {
