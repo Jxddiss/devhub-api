@@ -1,14 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   ManyToOne,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { User } from './User';
 import { Comment } from './Comment';
+import { Portfolio } from './Portfolio';
+import { User } from './User';
 
 @Entity('projects')
 export class Projet {
@@ -69,4 +70,6 @@ export class Projet {
   @OneToMany(() => Comment, (comment) => comment.projet)
     comments!: Comment[];
 
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.projets)
+    portfolio?: Portfolio;
 }
