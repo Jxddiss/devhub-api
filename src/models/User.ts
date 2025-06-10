@@ -7,8 +7,10 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { Projet } from './Projet';
+import { Portfolio } from './Portfolio';
 
 @Entity('users')
 export class User {
@@ -63,4 +65,9 @@ export class User {
     cascade: true,
   })
     comments!: Projet[];
+  
+  @OneToOne(() => Portfolio, (portfolio) => portfolio.user, {
+    cascade: true,
+  })
+    portfolio?: Portfolio;
 }
