@@ -1,11 +1,12 @@
 import express from 'express';
-import users from './users';
-import emojis from './emojis';
 import auth from './auth';
+import comments from './comments';
+import courses from './courses';
+import emojis from './emojis';
+import portfolios from './portfolios';
 import projets from './projets';
 import tags from './tags';
-import courses from './courses';
-import comments from './comments';
+import users from './users';
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use('/auth', auth);
 router.use('/tags', tags);
 router.use('/courses', courses);
 router.use('/comments', comments);
+router.use('/portfolios', portfolios);
 
 export default router;

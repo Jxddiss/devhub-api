@@ -12,4 +12,6 @@ export class Portfolio {
   @OneToOne(() => User, (user) => user.portfolio)
     user!: User;
 
+  @Column({ type: 'varchar', length: 50, default: 'active' })
+    status!: 'active' | 'deleted' | 'archived';
 }
