@@ -1,14 +1,14 @@
 import express from 'express';
 import {
   createUserController,
-  getAllUsersController,
-  getUserByIdController,
-  updateUserController,
   deleteUserController,
+  getAllUsersController,
+  getUserByFirstAndLastController,
+  getUserByIdController,
+  getUserByNameWildCardController,
   updateUserAvatarController,
   updateUserBannerController,
-  getUserByNameWildCardController,
-  getUserByFirstAndLastController,
+  updateUserController,
 } from '../controllers/userController';
 import { authenticate } from '../middlewares';
 

@@ -1,10 +1,10 @@
 import express from 'express';
 import {
   createCommentController,
-  getAllCommentsByProjetController,
-  getAllRepliesByCommentIdController,
-  getAllCommentsByUserIdController,
   deleteCommentController,
+  getAllCommentsByProjetController,
+  getAllCommentsByUserIdController,
+  getAllRepliesByCommentIdController,
 } from '../controllers/commentController';
 import { authenticate } from '../middlewares';
 

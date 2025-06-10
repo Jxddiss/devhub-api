@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getTagByNameController, getAllTagsController } from '../controllers/tagController';
+import { getAllTagsController, getTagByNameController } from '../controllers/tagController';
 
 const router = express.Router();
 

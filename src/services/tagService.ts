@@ -38,7 +38,3 @@ export const deleteTag = async (id: number) => {
   if (!tag) throw new Error('Tag not found');
   return tagRepository.remove(tag);
 };
-
-
-
-

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
+import { verifyToken } from '../services/tokenService';
+import { uploadImageFile } from '../services/uploadService';
 import {
   createUser,
+  deleteUser,
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUser,
 } from '../services/userService';
-import { verifyToken } from '../services/tokenService';
-import { uploadImageFile } from '../services/uploadService';
 
 
 export const meController = async (req: Request, res: Response) => {

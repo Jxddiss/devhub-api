@@ -1,5 +1,5 @@
 import express from 'express';
-import { logoutController, signUpController, loginController, googleLoginController } from '../controllers/authController';
+import { googleLoginController, loginController, logoutController, signUpController } from '../controllers/authController';
 import { meController } from '../controllers/userController';
 import { authenticate } from '../middlewares';
 

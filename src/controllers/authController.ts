@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
-import { signUpWithEmail } from '../services/authService';
-import { signInWithEmail } from '../services/authService';
+import { signInWithEmail, signUpWithEmail } from '../services/authService';
 
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth } from '../config/firebaseConfig';

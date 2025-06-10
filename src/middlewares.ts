@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { verifyToken } from './services/tokenService';
-import ErrorResponse from './interfaces/ErrorResponse';
 import { isTokenInvalidated } from './controllers/authController';
+import ErrorResponse from './interfaces/ErrorResponse';
+import { verifyToken } from './services/tokenService';
 
 // Extend the Request interface to include the 'user' property
 declare global {
