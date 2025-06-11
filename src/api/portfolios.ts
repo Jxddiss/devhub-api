@@ -15,7 +15,7 @@ import { authenticate } from '../middlewares';
 const router = express.Router();
 
 router.get('/', authenticate, getAllPortfoliosController);
-router.get('/:id', authenticate, getPortfolioByIdController);
+router.get('/:id', getPortfolioByIdController);
 router.get('/user/:userId', authenticate, getPortfolioByUserIdController);
 router.post('/', authenticate, createPortfolioController);
 router.put('/:id', authenticate, updatePortfolioController);

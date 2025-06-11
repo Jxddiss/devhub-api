@@ -55,7 +55,7 @@ export class User {
   })
   @JoinTable()
     projets!: Projet[];
-  
+
   @OneToMany(() => Projet, (projet) => projet.author, {
     cascade: true,
   })
@@ -65,9 +65,15 @@ export class User {
     cascade: true,
   })
     comments!: Projet[];
-  
+
   @OneToOne(() => Portfolio, (portfolio) => portfolio.user, {
     cascade: true,
   })
     portfolio?: Portfolio;
+
+  @Column({ nullable: true, type: 'text' })
+    refreshToken?: string | null;
+
+  @Column({ nullable: true, type: 'timestamp' })
+    refreshTokenExpiresAt?: Date | null;
 }
