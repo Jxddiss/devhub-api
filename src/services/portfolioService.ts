@@ -8,15 +8,45 @@ export const getAllPortfolios = async () => {
 };
 
 export const getPortfolioById = async (id: number) => {
-  return portfolioRepository.findOneBy({ id });
+  return portfolioRepository.findOne({
+    where: { id, status: 'active' },
+    relations: ['user'],
+  });
 };
 
 export const getPortfolioByUserId = async (userId: number) => {
-  return portfolioRepository.findOneBy({ user: { id: userId } });
+  return portfolioRepository.findOne({ 
+    where: { user: { id: userId }, status: 'active' },
+    relations: ['user'],
+  });
 };
 
 export const createPortfolio = async (portfolioData: Partial<Portfolio>) => {
-  const portfolio = portfolioRepository.create(portfolioData);
+  const userId = portfolioData.user?.id;
+  
+  if (!userId) {
+    throw new Error('User ID is required to create a portfolio');
+  }
+  
+  const existingPortfolio = await portfolioRepository.findOne({
+    where: { user: { id: userId } },
+    relations: ['user'],
+  });
+  
+  if (existingPortfolio) {
+    if (existingPortfolio.status !== 'active') {
+      existingPortfolio.status = 'active';
+      Object.assign(existingPortfolio, portfolioData);
+      return portfolioRepository.save(existingPortfolio);
+    } else {
+      throw new Error('User already has an active portfolio');
+    }
+  }
+  
+  const portfolio = portfolioRepository.create({
+    ...portfolioData,
+    status: 'active',
+  });
   return portfolioRepository.save(portfolio);
 };
 
