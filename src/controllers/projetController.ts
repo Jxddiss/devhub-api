@@ -51,13 +51,13 @@ export const createProjetController = async (req: any, res: any) => {
     }
     projet.tags = dbTags;
 
-    let dbCourses: string = '';
+    let dbCourses: string | undefined;
     if (projet.course) {
       const course = await getUniqueCourseByTitle(projet.course);
       if (course) {
         dbCourses = course.title;
       } else {
-        return res.status(404).json({ error: 'Course not found' });
+        dbCourses = undefined;
       }
     }
     projet.course = dbCourses;
