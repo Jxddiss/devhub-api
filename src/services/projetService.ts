@@ -81,25 +81,35 @@ export const getProjetsByCollaborator = async (collaborator: string) => {
     .toLowerCase()
     .split(' ')
     .filter((term) => term.trim() !== '');
+
   if (searchTerms.length === 0) {
     return getAllProjets();
   }
-  let queryBuilder = projetRepository.createQueryBuilder('projet').leftJoinAndSelect('projet.author', 'author');
-  searchTerms.forEach((term, index) => {
-    if (index === 0) {
-      queryBuilder = queryBuilder.where(
-        'LOWER(projet.collaborators) LIKE :term' + index,
-        { ['term' + index]: `%${term}%` },
-      );
-    } else {
-      queryBuilder = queryBuilder.orWhere(
-        'LOWER(projet.collaborators) LIKE :term' + index,
-        { ['term' + index]: `%${term}%` },
-      );
-    }
+
+  const allProjets = await projetRepository.find({
+    relations: ['author'],
   });
 
-  return queryBuilder.getMany();
+  // Filtrer les projets où la recherche correspond :
+  // 1. Au nom de l'auteur
+  // 2. Au nom d'un collaborateur
+  const matchingProjets = allProjets.filter(projet => {
+    const authorFullName = `${projet.author.firstName} ${projet.author.lastName}`.toLowerCase();
+    const authorUsername = projet.author.username?.toLowerCase() || '';
+    
+    const authorMatches = searchTerms.every(term => 
+      authorFullName.includes(term) || authorUsername.includes(term),
+    );
+
+    const collaboratorMatches = projet.collaborators?.some(collab => {
+      const collabLower = collab.toLowerCase();
+      return searchTerms.every(term => collabLower.includes(term));
+    }) || false;
+
+    return authorMatches || collaboratorMatches;
+  });
+
+  return matchingProjets;
 };
 
 export const getProjetsByCourse = async (course: string) => {

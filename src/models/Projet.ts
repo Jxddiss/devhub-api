@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -27,7 +29,7 @@ export class Projet {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
     githubUrl?: string;
-  
+
   @Column({ type: 'varchar', length: 255, nullable: true })
     gitLabUrl?: string;
 
@@ -70,6 +72,11 @@ export class Projet {
   @OneToMany(() => Comment, (comment) => comment.projet)
     comments!: Comment[];
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.projets)
-    portfolio?: Portfolio;
+  @ManyToMany(() => Portfolio, (portfolio) => portfolio.projets)
+  @JoinTable({
+    name: 'portfolio_projets',
+    joinColumn: { name: 'projet_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'portfolio_id', referencedColumnName: 'id' },
+  })
+    portfolio?: Portfolio[];
 }

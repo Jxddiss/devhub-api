@@ -114,6 +114,8 @@ const syncDatabase = async () => {
     { id: 25, title: 'Nouvellees technologies et développement', projets: [] },
     { id: 26, title: "Méthodes de conception d'applications 2", projets: [] },
     { id: 27, title: 'Stage en programmation', projets: [] },
+    { id: 28, title: 'Projet de fin d’études', projets: [] },
+    { id: 29, title: 'Aucun', projets: [] },
   ];
   try {
 

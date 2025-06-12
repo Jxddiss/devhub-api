@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Projet } from './Projet';
 import { User } from './User';
 
@@ -20,11 +20,14 @@ export class Portfolio {
   @Column({ type: 'varchar', length: 100, nullable: true })
     title?: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+    hook?: string;
+
   @Column({ type: 'text', nullable: true })
     about?: string;
 
   @Column({ type: 'json', nullable: true })
-    skills?: string[];
+    skills?: { name: string; level: number }[];
 
   @Column({ type: 'boolean', default: false })
     isPublic!: boolean;
@@ -59,7 +62,7 @@ export class Portfolio {
   @Column({ type: 'varchar', length: 500, nullable: true })
     cvDownloadUrl?: string;
   
-  @OneToMany(() => Projet, (projet) => projet.portfolio)
+  @ManyToMany(() => Projet, (projet) => projet.portfolio)
     projets!: Projet[];
 
   @Column({ type: 'varchar', length: 255, nullable: true })
