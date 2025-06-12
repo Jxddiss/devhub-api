@@ -9,71 +9,77 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Favorite } from './Favorite';
 import { Portfolio } from './Portfolio';
 import { Projet } from './Projet';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-    id!: number;
+  id!: number;
 
   @Column()
-    firebaseUid!: string;
+  firebaseUid!: string;
 
   @Column({ type: 'varchar', length: 255 })
-    lastName!: string;
+  lastName!: string;
 
   @Column({ type: 'varchar', length: 255 })
-    firstName!: string;
+  firstName!: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
-    username!: string;
+  username!: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
-    email!: string;
+  email!: string;
 
   @Column({ type: 'varchar', nullable: true })
-    avatar?: string;
+  avatar?: string;
 
   @Column({ type: 'varchar', nullable: true })
-    banner?: string;
+  banner?: string;
 
   @Column({ type: 'boolean', default: false })
-    isLocked!: boolean;
+  isLocked!: boolean;
 
   @Column({ type: 'boolean', default: false })
-    isBanned!: boolean;
+  isBanned!: boolean;
 
   @CreateDateColumn()
-    createdAt!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-    updatedAt!: Date;
+  updatedAt!: Date;
 
-  @ManyToMany(() => Projet, (projet) => projet.collaborators, {
+  @ManyToMany(() => Projet, projet => projet.collaborators, {
     cascade: true,
   })
   @JoinTable()
-    projets!: Projet[];
+  projets!: Projet[];
 
-  @OneToMany(() => Projet, (projet) => projet.author, {
+  @OneToMany(() => Favorite, favorite => favorite.user, {
     cascade: true,
   })
-    projetsEcrits!: Projet[];
+  favorites!: Favorite[];
 
-  @OneToMany(() => Projet, (projet) => projet.author, {
+  @OneToMany(() => Projet, projet => projet.author, {
     cascade: true,
   })
-    comments!: Projet[];
+  projetsEcrits!: Projet[];
 
-  @OneToOne(() => Portfolio, (portfolio) => portfolio.user, {
+  @OneToMany(() => Projet, projet => projet.author, {
     cascade: true,
   })
-    portfolio?: Portfolio;
+  comments!: Projet[];
+
+  @OneToOne(() => Portfolio, portfolio => portfolio.user, {
+    cascade: true,
+  })
+  portfolio?: Portfolio;
 
   @Column({ nullable: true, type: 'text' })
-    refreshToken?: string | null;
+  refreshToken?: string | null;
 
   @Column({ nullable: true, type: 'timestamp' })
-    refreshTokenExpiresAt?: Date | null;
+  refreshTokenExpiresAt?: Date | null;
 }
