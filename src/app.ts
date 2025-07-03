@@ -1,12 +1,11 @@
+import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
-import morgan from 'morgan';
 import helmet from 'helmet';
-import cors from 'cors';
+import morgan from 'morgan';
 import path from 'path';
-import * as middlewares from './middlewares';
 import api from './api';
-import MessageResponse from './interfaces/MessageResponse';
+import * as middlewares from './middlewares';
 
 require('dotenv').config();
 
@@ -28,9 +27,10 @@ app.use(fileUpload());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.get<{}, MessageResponse>('/', (req, res) => {
+app.get('/', (req, res) => {
   res.json({
-    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+    message: "Bienvenue sur l'API DevHub",
+    version: '1.0.0',
   });
 });
 

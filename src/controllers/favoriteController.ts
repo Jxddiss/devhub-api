@@ -59,7 +59,7 @@ export const getFavoritesByUserIdController = async (req: any, res: any) => {
 
 export const isProjectFavoritedByUserController = async (
   req: any,
-  res: any
+  res: any,
 ) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -74,7 +74,7 @@ export const isProjectFavoritedByUserController = async (
   try {
     const isFavorited = await isProjectFavoritedByUser(
       req.user.id,
-      parseInt(projectId as string)
+      parseInt(projectId as string),
     );
     res.status(200).json({ isFavorited });
   } catch (error) {
